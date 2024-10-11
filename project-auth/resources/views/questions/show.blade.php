@@ -40,5 +40,32 @@
         <a href="{{ Storage::url($question->file_path) }}" target="_blank">View Attached File</a>
     @endif
 
+    @foreach($question->answers as $answer)
+        <div class="answer">
+            <h4>{{ $answer->user->name }}'s Answer:</h4>
+            <p>{{ $answer->body }}</p>
+
+            <!-- Daftar Komentar -->
+            <h5>Comments:</h5>
+            <ul>
+                @forelse ($answer->comments as $comment)
+                    <li>{{ $comment->user->name }}: {{ $comment->body }}</li>
+                @empty
+                    <li>No comments yet.</li>
+                @endforelse
+            </ul>
+
+            <!-- Form untuk Menambahkan Komentar -->
+            <form method="POST" action="{{ route('comments.store', $answer->id) }}">
+                @csrf
+                <div>
+                    <textarea name="body" placeholder="Add a comment..." required></textarea>
+                </div>
+                <button type="submit">Submit Comment</button>
+            </form>
+        </div>
+    @endforeach
+
+
 </body>
 </html>

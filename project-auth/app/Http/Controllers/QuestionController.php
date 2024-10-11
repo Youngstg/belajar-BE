@@ -9,6 +9,24 @@ use Illuminate\Support\Facades\Storage;
 
 class QuestionController extends Controller
 {
+    public function index(Request $request)
+    {
+        $search = $request->input('search');
+
+        // Jika ada input pencarian, lakukan pencarian berdasarkan judul atau body
+        if ($search) {
+            $questions = Question::where('title', 'like', '%' . $search . '%')
+                                ->orWhere('body', 'like', '%' . $search . '%')
+                                ->with('user')
+                                ->latest()
+                                ->get();
+        } else {
+            // Jika tidak ada input pencarian, tampilkan semua pertanyaan
+            $questions = Question::with('user')->latest()->get();
+        }
+
+        return view('questions.index', compact('questions'));
+    }
 
     public function create()
     {

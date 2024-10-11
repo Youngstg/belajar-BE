@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SettingsController;
 
@@ -20,7 +21,9 @@ Route::post('/questions', [QuestionController::class, 'store'])->middleware('aut
 Route::get('/questions/{id}', [QuestionController::class, 'show'])->middleware('auth')->name('questions.show');
 Route::post('/questions/{id}/answers', [AnswerController::class, 'store'])->middleware('auth')->name('answers.store');
 
-Route::get('/questions', [QuestionController::class, 'index'])->middleware('auth')->name('questions.index');
-
 Route::get('/settings', [SettingsController::class, 'index'])->middleware('auth')->name('settings.index');
 Route::post('/settings', [SettingsController::class, 'update'])->middleware('auth')->name('settings.update');
+
+Route::get('/questions', [QuestionController::class, 'index'])->middleware('auth')->name('questions.index');
+
+Route::post('/answers/{answer}/comments', [CommentController::class, 'store'])->middleware('auth')->name('comments.store');
