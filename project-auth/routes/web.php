@@ -3,6 +3,7 @@
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SettingsController;
 
@@ -27,3 +28,6 @@ Route::post('/settings', [SettingsController::class, 'update'])->middleware('aut
 Route::get('/questions', [QuestionController::class, 'index'])->middleware('auth')->name('questions.index');
 
 Route::post('/answers/{answer}/comments', [CommentController::class, 'store'])->middleware('auth')->name('comments.store');
+
+Route::post('/answers/{answer}/like', [LikeController::class, 'toggleLike'])->middleware('auth')->name('answers.like');
+

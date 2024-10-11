@@ -34,6 +34,12 @@
         @endforeach
     </ul>
 
+    @if($bestAnswer)
+        <h2>Best Answer (Most Liked)</h2>
+        <p>{{ $bestAnswer->body }}</p>
+        <p>Likes: {{ $bestAnswer->like_count }}</p>
+    @endif
+
     <a href="{{ route('settings.index') }}">Settings</a>
 
     @if ($question->file_path)
@@ -66,6 +72,27 @@
         </div>
     @endforeach
 
+    @foreach($question->answers as $answer)
+        <div class="answer">
+            <h4>{{ $answer->user->name }}'s Answer:</h4>
+            <p>{{ $answer->body }}</p>
+
+            <!-- Menampilkan Jumlah Like -->
+            <p>Likes: {{ $answer->like_count }}</p>
+
+            <!-- Tombol Like/Unlike -->
+            <form method="POST" action="{{ route('answers.like', $answer->id) }}">
+                @csrf
+                <button type="submit">
+                    @if($answer->likes->where('user_id', auth()->id())->count())
+                        Unlike
+                    @else
+                        Like
+                    @endif
+                </button>
+            </form>
+        </div>
+    @endforeach
 
 </body>
 </html>

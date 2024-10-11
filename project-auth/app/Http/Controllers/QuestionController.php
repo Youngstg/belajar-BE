@@ -66,8 +66,18 @@ class QuestionController extends Controller
         $question = Question::with('answers.user')->findOrFail($id); // Mengambil pertanyaan dengan jawaban dan pengguna
         $allQuestions = Question::all(); // Mengambil semua pertanyaan
 
-        return view('questions.show', compact('question', 'allQuestions'));
+        $question = Question::with(['answers', 'answers.likes'])->findOrFail($id);
+
+        // Menemukan jawaban dengan like terbanyak
+        $bestAnswer = $question->answers->sortByDesc(function ($answer) {
+            return $answer->likes->count();
+        })->first();
+    
+        // Mengembalikan semua variabel ke view sekaligus
+        return view('questions.show', compact('question', 'allQuestions', 'bestAnswer'));
     }
+
+
 
 }
 

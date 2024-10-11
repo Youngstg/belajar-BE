@@ -25,4 +25,15 @@ class Answer extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    // Untuk menghitung jumlah like
+    public function getLikeCountAttribute()
+    {
+        return $this->likes->count();
+    }
+
 }
